@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Réservation — Grand Élysée</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"/>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css"/>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg">
+  <div class="container">
+    <a class="navbar-brand" href="index.php">Grand <span>Élysée</span></a>
+    <div class="collapse navbar-collapse">
+      <ul class="navbar-nav ms-auto align-items-center gap-1">
+        <li class="nav-item"><a class="nav-link" href="index.html">Accueil</a></li>
+        <li class="nav-item"><a class="nav-link active" href="reservation.html">Réserver</a></li>
+        <li class="nav-item"><a class="nav-link" href="account.php">Mon compte</a></li>
+        <li class="nav-item ms-2"><a class="btn btn-outline-gold btn-sm" href="login.php">Connexion</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- PAGE HEADER -->
+<div style="background:linear-gradient(135deg,rgba(13,13,13,0.92),rgba(13,13,13,0.75)),url('https://images.unsplash.com/photo-1564501049412-61c2a3083791?w=1400') center/cover no-repeat;padding:5rem 0 3rem;">
+  <div class="container">
+    <p class="section-overline">Disponibilité</p>
+    <h1 class="section-title">Réserver votre <span>séjour</span></h1>
+    <div class="divider-gold"></div>
+  </div>
+</div>
+<form action="client_reservation.php" method="post">
+<div class="container" style="padding:3rem 0;">
+  <div class="row g-5">
+    <div class="col-lg-7">
+      <div style="background:var(--dark2);border:1px solid rgba(201,168,76,0.15);padding:2.5rem;">
+
+        <!-- Étape 1 : Dates -->
+        <p class="section-overline mb-3">Étape 1 — Votre séjour</p>
+        <div class="row g-3 mb-4">
+          <div class="col-6">
+            <label class="form-label">Date d'arrivée</label>
+            <input type="date" class="form-control" id="checkin" onchange="calcTotal()" name="date_arrivee"/>
+          </div>
+          <div class="col-6">
+            <label class="form-label">Date de départ</label>
+            <input type="date" class="form-control" id="checkout" onchange="calcTotal()" name="date_depart"/>
+          </div>
+          <div class="col-6">
+            <label class="form-label">Adultes</label>
+            <select class="form-select" onchange="calcTotal()" name="adulte">
+              <option>1</option><option selected>2</option><option>3</option><option>4</option>
+            </select>
+          </div>
+          <div class="col-6">
+            <label class="form-label">Enfants</label>
+            <select class="form-select" name="enfant">
+              <option>0</option><option>1</option><option>2</option>
+            </select>
+          </div>
+        </div>
+
+        <hr style="border-color:rgba(201,168,76,0.15);margin-bottom:1.5rem;"/>
+
+        <!-- Étape 2 : Chambre -->
+        <p class="section-overline mb-3">Étape 2 — Choisir une chambre</p>
+        <div class="d-flex flex-column gap-3 mb-4" id="roomSelect">
+          <label style="border:1px solid rgba(201,168,76,0.3);padding:1rem 1.25rem;cursor:pointer;display:flex;align-items:center;gap:14px;" onclick="selectRoom(this,90)">
+            <input type="radio" style="accent-color:var(--gold);width:16px;height:16px;" value="standard" name="type" checked/>
+            <div style="flex:1;">
+              <div style="font-family:'Playfair Display',serif;font-size:1rem;color:var(--cream);">Chambre Standard</div>
+              <div style="font-size:0.78rem;color:var(--muted);">25m² · Vue jardin · King size</div>
+            </div>
+            <div style="color:var(--gold);font-weight:500;white-space:nowrap;">90dt <span style="font-size:0.72rem;color:var(--muted);">/nuit</span></div>
+          </label>
+          <label style="border:1px solid rgba(201,168,76,0.3);padding:1rem 1.25rem;cursor:pointer;display:flex;align-items:center;gap:14px;" onclick="selectRoom(this,150)">
+            <input type="radio" name="type" style="accent-color:var(--gold);width:16px;height:16px;" value="deluxe"/>
+            <div style="flex:1;">
+              <div style="font-family:'Playfair Display',serif;font-size:1rem;color:var(--cream);">Chambre Deluxe</div>
+              <div style="font-size:0.78rem;color:var(--muted);">35m² · Terrasse · Vue panoramique</div>
+            </div>
+            <div style="color:var(--gold);font-weight:500;white-space:nowrap;">150dt <span style="font-size:0.72rem;color:var(--muted);">/nuit</span></div>
+          </label>
+          <label style="border:1px solid rgba(201,168,76,0.3);padding:1rem 1.25rem;cursor:pointer;display:flex;align-items:center;gap:14px;" onclick="selectRoom(this,350)">
+            <input type="radio" name="type" style="accent-color:var(--gold);width:16px;height:16px;" value="suite"/>
+            <div style="flex:1;">
+              <div style="font-family:'Playfair Display',serif;font-size:1rem;color:var(--cream);">Suite Présidentielle</div>
+              <div style="font-size:0.78rem;color:var(--muted);">80m² · Jacuzzi · Butler dédié</div>
+            </div>
+            <div style="color:var(--gold);font-weight:500;white-space:nowrap;">350dt <span style="font-size:0.72rem;color:var(--muted);">/nuit</span></div>
+          </label>
+        </div>
+
+        <hr style="border-color:rgba(201,168,76,0.15);margin-bottom:1.5rem;"/>
+
+        <!-- Étape 3 : Options -->
+        <p class="section-overline mb-3">Étape 3 — Options supplémentaires</p>
+        <div class="row g-2 mb-4">
+          <div class="col-12">
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" id="breakfast" style="accent-color:var(--gold);" onchange="calcTotal()" name="petit_dej"/>
+              <label class="form-check-label" for="breakfast" style="font-size:0.88rem;color:var(--cream);">
+                Petit-déjeuner inclus <span style="color:var(--gold);">+40dt/pers./nuit</span>
+              </label>
+            </div>
+          </div>
+          <div class="col-12">
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" id="spa" style="accent-color:var(--gold);" onchange="calcTotal()" name="spa"/>
+              <label class="form-check-label" for="spa" style="font-size:0.88rem;color:var(--cream);">
+                Accès Spa illimité <span style="color:var(--gold);">+100dt/nuit</span>
+              </label>
+            </div>
+          </div>
+          <div class="col-12">
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" id="parking" style="accent-color:var(--gold);" onchange="calcTotal()" name="parking"/>
+              <label class="form-check-label" for="parking" style="font-size:0.88rem;color:var(--cream);">
+                Parking privé sécurisé <span style="color:var(--gold);">+20dt/nuit</span>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <hr style="border-color:rgba(201,168,76,0.15);margin-bottom:1.5rem;"/>
+
+        <!-- Étape 4 : Demandes -->
+        <p class="section-overline mb-3">Étape 4 — Demandes spéciales</p>
+        <textarea class="form-control mb-4" rows="3" placeholder="Chambre haute, lit bébé, allergies alimentaires..."></textarea>
+
+        <button type="submit" class="btn btn-gold w-100" style="padding:1rem;" name="confirmer">
+          <i class="bi bi-check-circle me-2" ></i>Confirmer la réservation
+        </button>
+      </div>
+    </div>
+
+    <!-- SUMMARY -->
+    <div class="col-lg-5">
+      <div style="position:sticky;top:90px;">
+        <div style="background:var(--dark2);border:1px solid rgba(201,168,76,0.2);padding:2rem;margin-bottom:1rem;">
+          <p class="section-overline mb-3">Récapitulatif</p>
+          <div id="summaryRoom" style="margin-bottom:1rem;padding-bottom:1rem;border-bottom:1px solid rgba(201,168,76,0.1);">
+            <div class="d-flex justify-content-between" style="font-size:0.88rem;">
+              <span style="color:var(--muted);">Chambre Standard</span>
+              <span style="color:var(--cream);">—</span>
+            </div>
+          </div>
+          <div id="summaryLines" style="margin-bottom:1rem;padding-bottom:1rem;border-bottom:1px solid rgba(201,168,76,0.1);display:flex;flex-direction:column;gap:6px;font-size:0.85rem;"></div>
+          <div class="d-flex justify-content-between align-items-center">
+            <span style="font-size:0.85rem;color:var(--muted);">Total estimé</span>
+            <span id="totalPrice" style="font-family:'Playfair Display',serif;font-size:1.8rem;color:var(--gold);">—</span>
+          </div>
+        </div>
+
+        <div style="background:var(--dark2);border:1px solid rgba(201,168,76,0.1);padding:1.5rem;">
+          <p style="font-size:0.72rem;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:1rem;">Nos garanties</p>
+          <div class="d-flex flex-column gap-3">
+            <div class="d-flex gap-3 align-items-start">
+              <i class="bi bi-shield-check" style="color:var(--gold);font-size:1.1rem;margin-top:1px;"></i>
+              <div>
+                <div style="font-size:0.85rem;color:var(--cream);">Annulation gratuite</div>
+                <div style="font-size:0.75rem;color:var(--muted);">Jusqu'à 48h avant l'arrivée</div>
+              </div>
+            </div>
+            <div class="d-flex gap-3 align-items-start">
+              <i class="bi bi-lock" style="color:var(--gold);font-size:1.1rem;margin-top:1px;"></i>
+              <div>
+                <div style="font-size:0.85rem;color:var(--cream);">Paiement sécurisé</div>
+                <div style="font-size:0.75rem;color:var(--muted);">Données cryptées SSL</div>
+              </div>
+            </div>
+            <div class="d-flex gap-3 align-items-start">
+              <i class="bi bi-headset" style="color:var(--gold);font-size:1.1rem;margin-top:1px;"></i>
+              <div>
+                <div style="font-size:0.85rem;color:var(--cream);">Support 24h/24</div>
+                <div style="font-size:0.75rem;color:var(--muted);">Conciergerie disponible</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</form>
+
+
+<footer>
+  <div class="container text-center">
+    <p style="font-size:0.75rem;color:var(--muted);">© 2026 Grand Élysée. Tous droits réservés.</p>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  let roomPrice = 90;
+  const roomNames = { 90: 'Chambre Standard', 150: 'Chambre Deluxe', 350: 'Suite Présidentielle' };
+
+  function selectRoom(el, price) {
+    roomPrice = price;
+    calcTotal();
+  }
+
+  function calcTotal() {
+    const cin = document.getElementById('checkin').value;
+    const cout = document.getElementById('checkout').value;
+    const breakfast = document.getElementById('breakfast').checked;
+    const spa = document.getElementById('spa').checked;
+    const parking = document.getElementById('parking').checked;
+
+    if (!cin || !cout) {
+      document.getElementById('totalPrice').textContent = '—';
+      return;
+    }
+    const nights = Math.max(0, (new Date(cout) - new Date(cin)) / 86400000);
+    if (nights <= 0) { document.getElementById('totalPrice').textContent = '—'; return; }
+
+    let extras = 0;
+    const lines = [];
+    lines.push(`<div class="d-flex justify-content-between"><span style="color:var(--muted);">${roomNames[roomPrice]} × ${nights} nuits</span><span style="color:var(--cream);">${roomPrice * nights} dt</span></div>`);
+    if (breakfast) { extras += 40 * nights; lines.push(`<div class="d-flex justify-content-between"><span style="color:var(--muted);">Petit-déjeuner</span><span style="color:var(--cream);">+${40*nights} dt</span></div>`); }
+    if (spa)       { extras += 100 * nights; lines.push(`<div class="d-flex justify-content-between"><span style="color:var(--muted);">Accès Spa</span><span style="color:var(--cream);">+${100*nights} dt</span></div>`); }
+    if (parking)   { extras += 20 * nights; lines.push(`<div class="d-flex justify-content-between"><span style="color:var(--muted);">Parking</span><span style="color:var(--cream);">+${20*nights} dt</span></div>`); }
+
+    const total = roomPrice * nights + extras;
+    document.getElementById('summaryLines').innerHTML = lines.join('');
+    document.getElementById('totalPrice').textContent = total + ' dt';
+    document.getElementById('summaryRoom').innerHTML = `<div style="font-size:0.82rem;color:var(--muted);">${nights} nuit${nights>1?'s':''} · ${roomNames[roomPrice]}</div>`;
+  }
+</script>
+</body>
+</html>

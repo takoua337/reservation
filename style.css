@@ -1,0 +1,335 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Jost:wght@300;400;500&display=swap');
+
+:root {
+  --gold: #C9A84C;
+  --gold-light: #e8cc85;
+  --dark: #0D0D0D;
+  --dark2: #181818;
+  --dark3: #242424;
+  --cream: #F5F0E8;
+  --muted: #888880;
+  --white: #FFFFFF;
+  --danger: #c0392b;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Jost', sans-serif;
+  background: var(--dark);
+  color: var(--cream);
+  min-height: 100vh;
+}
+
+/* ── Navbar ── */
+.navbar {
+  background: rgba(13,13,13,0.97) !important;
+  border-bottom: 1px solid rgba(201,168,76,0.2);
+  padding: 1rem 0;
+}
+.navbar-brand {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.6rem;
+  color: var(--gold) !important;
+  letter-spacing: 2px;
+}
+.navbar-brand span { color: var(--cream); }
+.nav-link {
+  color: var(--cream) !important;
+  font-size: 0.82rem;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  font-weight: 400;
+  transition: color 0.2s;
+  padding: 0.5rem 1rem !important;
+}
+.nav-link:hover, .nav-link.active { color: var(--gold) !important; }
+.navbar-toggler { border-color: var(--gold); }
+.navbar-toggler-icon { filter: invert(1); }
+
+/* ── Buttons ── */
+.btn-gold {
+  background: var(--gold);
+  color: var(--dark);
+  border: none;
+  font-family: 'Jost', sans-serif;
+  font-weight: 500;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  font-size: 0.78rem;
+  padding: 0.75rem 2rem;
+  border-radius: 0;
+  transition: background 0.2s, transform 0.15s;
+}
+.btn-gold:hover { background: var(--gold-light); color: var(--dark); transform: translateY(-1px); }
+
+.btn-outline-gold {
+  border: 1px solid var(--gold);
+  color: var(--gold);
+  background: transparent;
+  font-family: 'Jost', sans-serif;
+  font-weight: 500;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  font-size: 0.78rem;
+  padding: 0.75rem 2rem;
+  border-radius: 0;
+  transition: all 0.2s;
+}
+.btn-outline-gold:hover { background: var(--gold); color: var(--dark); }
+
+/* ── Section titles ── */
+.section-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.4rem;
+  font-weight: 600;
+  color: var(--cream);
+  line-height: 1.2;
+}
+.section-title span { color: var(--gold); }
+.section-overline {
+  font-size: 0.72rem;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 0.5rem;
+}
+.divider-gold {
+  width: 48px;
+  height: 2px;
+  background: var(--gold);
+  margin: 1rem 0 1.5rem;
+}
+
+/* ── Cards ── */
+.card-hotel {
+  background: var(--dark2);
+  border: 1px solid rgba(201,168,76,0.15);
+  border-radius: 0;
+  overflow: hidden;
+  transition: transform 0.25s, border-color 0.25s;
+}
+.card-hotel:hover {
+  transform: translateY(-4px);
+  border-color: rgba(201,168,76,0.5);
+}
+.card-hotel img {
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+  filter: brightness(0.85);
+  transition: filter 0.3s;
+}
+.card-hotel:hover img { filter: brightness(1); }
+.card-hotel .card-body { padding: 1.5rem; }
+.card-hotel .card-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.2rem;
+  color: var(--cream);
+}
+.card-hotel .price {
+  font-size: 1.3rem;
+  font-weight: 500;
+  color: var(--gold);
+}
+.card-hotel .price small {
+  font-size: 0.75rem;
+  color: var(--muted);
+  font-weight: 300;
+}
+
+/* ── Forms ── */
+.form-control, .form-select {
+  background: var(--dark3) !important;
+  border: 1px solid rgba(201,168,76,0.25) !important;
+  color: var(--cream) !important;
+  border-radius: 0 !important;
+  padding: 0.75rem 1rem;
+  font-family: 'Jost', sans-serif;
+}
+.form-control:focus, .form-select:focus {
+  border-color: var(--gold) !important;
+  box-shadow: 0 0 0 2px rgba(201,168,76,0.15) !important;
+  background: var(--dark3) !important;
+}
+.form-control::placeholder { color: var(--muted) !important; }
+.form-label {
+  font-size: 0.75rem;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 0.4rem;
+}
+.form-select option { background: var(--dark3); }
+
+/* ── Auth pages ── */
+.auth-wrapper {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--dark);
+  position: relative;
+  overflow: hidden;
+}
+.auth-wrapper::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 60% 40%, rgba(201,168,76,0.07) 0%, transparent 65%);
+  pointer-events: none;
+}
+.auth-card {
+  background: var(--dark2);
+  border: 1px solid rgba(201,168,76,0.2);
+  padding: 3rem 2.5rem;
+  width: 100%;
+  max-width: 440px;
+}
+.auth-logo {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.8rem;
+  color: var(--gold);
+  letter-spacing: 3px;
+}
+
+/* ── Tables admin ── */
+.table-dark-custom {
+  background: var(--dark2);
+  color: var(--cream);
+  font-size: 0.88rem;
+}
+.table-dark-custom thead th {
+  background: var(--dark3);
+  color: var(--gold);
+  font-size: 0.72rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  border-color: rgba(201,168,76,0.15);
+  font-weight: 500;
+  padding: 1rem;
+}
+.table-dark-custom tbody td {
+  border-color: rgba(201,168,76,0.08);
+  padding: 0.9rem 1rem;
+  vertical-align: middle;
+}
+.table-dark-custom tbody tr:hover { background: rgba(201,168,76,0.04); }
+
+/* ── Badges ── */
+.badge-gold { background: rgba(201,168,76,0.15); color: var(--gold); font-size: 0.72rem; letter-spacing: 1px; padding: 5px 10px; }
+.badge-success-custom { background: rgba(39,174,96,0.15); color: #27ae60; font-size: 0.72rem; letter-spacing: 1px; padding: 5px 10px; }
+.badge-danger-custom { background: rgba(192,57,43,0.15); color: #e74c3c; font-size: 0.72rem; letter-spacing: 1px; padding: 5px 10px; }
+.badge-pending { background: rgba(243,156,18,0.15); color: #f39c12; font-size: 0.72rem; letter-spacing: 1px; padding: 5px 10px; }
+
+/* ── Stat cards ── */
+.stat-card {
+  background: var(--dark2);
+  border: 1px solid rgba(201,168,76,0.15);
+  padding: 1.5rem;
+  border-left: 3px solid var(--gold);
+}
+.stat-card .stat-value {
+  font-family: 'Playfair Display', serif;
+  font-size: 2rem;
+  color: var(--gold);
+}
+.stat-card .stat-label {
+  font-size: 0.72rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+/* ── Sidebar admin ── */
+.admin-sidebar {
+  background: var(--dark2);
+  border-right: 1px solid rgba(201,168,76,0.15);
+  min-height: 100vh;
+  padding: 2rem 0;
+}
+.sidebar-brand {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.3rem;
+  color: var(--gold);
+  padding: 0 1.5rem 2rem;
+  letter-spacing: 2px;
+  border-bottom: 1px solid rgba(201,168,76,0.15);
+  margin-bottom: 1rem;
+}
+.sidebar-link {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0.75rem 1.5rem;
+  color: var(--muted);
+  text-decoration: none;
+  font-size: 0.82rem;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  transition: all 0.2s;
+}
+.sidebar-link:hover, .sidebar-link.active {
+  color: var(--gold);
+  background: rgba(201,168,76,0.06);
+  border-left: 2px solid var(--gold);
+}
+.sidebar-link i { width: 18px; }
+
+/* ── Footer ── */
+footer {
+  background: var(--dark2);
+  border-top: 1px solid rgba(201,168,76,0.15);
+  padding: 3rem 0 1.5rem;
+}
+footer .footer-brand {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.4rem;
+  color: var(--gold);
+  letter-spacing: 2px;
+}
+footer p, footer a {
+  color: var(--muted);
+  font-size: 0.85rem;
+  text-decoration: none;
+}
+footer a:hover { color: var(--gold); }
+.footer-title {
+  font-size: 0.72rem;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--cream);
+  margin-bottom: 1rem;
+}
+
+/* ── Hero ── */
+.hero {
+  min-height: 92vh;
+  background: linear-gradient(135deg, rgba(13,13,13,0.85) 0%, rgba(13,13,13,0.6) 100%),
+              url('https://images.unsplash.com/photo-1566073771259-6a8506099945?w=1600') center/cover no-repeat;
+  display: flex;
+  align-items: center;
+}
+.hero-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2.8rem, 6vw, 5rem);
+  font-weight: 700;
+  line-height: 1.1;
+  color: var(--cream);
+}
+.hero-title em { color: var(--gold); font-style: normal; }
+
+/* ── Account page ── */
+.account-section {
+  background: var(--dark2);
+  border: 1px solid rgba(201,168,76,0.15);
+  padding: 2rem;
+  margin-bottom: 1.5rem;
+}
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+  .hero { min-height: 70vh; }
+  .hero-title { font-size: 2.2rem; }
+  .section-title { font-size: 1.8rem; }
+}
