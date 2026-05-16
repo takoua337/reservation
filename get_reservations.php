@@ -25,7 +25,7 @@ if (!empty($statut)) {
     $params[] = $statut;
 }
 if (!empty($type)) {
-    $where   .= " AND r.type = ?";   // ✅ r.type et non ch.type
+    $where   .= " AND r.type = ?";   // r.type et non ch.type
     $types   .= "s";
     $params[] = $type;
 }

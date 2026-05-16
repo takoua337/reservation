@@ -52,8 +52,8 @@ if (isset($_POST['annuler_id']) && isset($_POST['ajax'])) {
   <div class="sidebar-brand">Grand Élysée</div>
   <a class="sidebar-link" href="dashbord.php"><i class="bi bi-grid-1x2"></i> Tableau de bord</a>
   <a class="sidebar-link active" href="admin_reservations.php"><i class="bi bi-calendar-check"></i> Réservations</a>
-  <a class="sidebar-link" href="admin_client.php"><i class="bi bi-people"></i> Clients</a>
-  <a class="sidebar-link" href="admin_chambre.php"><i class="bi bi-door-open"></i> Chambres</a>
+  <a class="sidebar-link" href="admin_client.html"><i class="bi bi-people"></i> Clients</a>
+  <a class="sidebar-link" href="admin_chambres.php"><i class="bi bi-door-open"></i> Chambres</a>
   <a class="sidebar-link" href="#"><i class="bi bi-bar-chart"></i> Statistiques</a>
   <div style="margin-top:auto;padding:1.5rem;">
     <a href="login.html" class="sidebar-link" style="color:#e74c3c;">

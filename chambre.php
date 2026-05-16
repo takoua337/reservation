@@ -25,21 +25,21 @@ $dispo_count = $dispo_result->fetch_assoc()['total'];
 $photos = [
     'standard' => 'https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=600',
     'deluxe'   => 'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=600',
-    'suite'    => 'https://images.unsplash.com/photo-1596394516093-501ba68a0ba6?w=600',
+    'presidentielle'    => 'https://images.unsplash.com/photo-1596394516093-501ba68a0ba6?w=600',
 ];
 
 // Icônes équipements par type
 $equipements = [
     'standard' => ['bi-wifi' => 'WiFi', 'bi-cup-hot' => 'Petit-déj.', 'bi-tv' => 'TV 4K'],
     'deluxe'   => ['bi-wifi' => 'WiFi', 'bi-wind' => 'Spa', 'bi-door-open' => 'Terrasse'],
-    'suite'    => ['bi-wifi' => 'WiFi', 'bi-gem' => 'Tout inclus', 'bi-person' => 'Butler'],
+    'presidentielle'    => ['bi-wifi' => 'WiFi', 'bi-gem' => 'Tout inclus', 'bi-person' => 'Butler'],
 ];
 
 // Labels types
 $type_labels = [
     'standard' => 'Standard',
     'deluxe'   => 'Deluxe',
-    'suite'    => 'Suite Présidentielle',
+    'presidentielle'    => 'Suite Présidentielle',
 ];
 ?>
 <!DOCTYPE html>
@@ -181,7 +181,7 @@ $type_labels = [
       <a href="chambres.php" class="filter-btn <?= $filtre === 'tous' ? 'active' : '' ?>">Toutes</a>
       <a href="chambres.php?type=standard" class="filter-btn <?= $filtre === 'standard' ? 'active' : '' ?>">Standard</a>
       <a href="chambres.php?type=deluxe" class="filter-btn <?= $filtre === 'deluxe' ? 'active' : '' ?>">Deluxe</a>
-      <a href="chambres.php?type=suite" class="filter-btn <?= $filtre === 'suite' ? 'active' : '' ?>">Suite</a>
+      <a href="chambres.php?type=suite" class="filter-btn <?= $filtre === 'presidentielle' ? 'active' : '' ?>">Suite</a>
     </div>
 
   </div>

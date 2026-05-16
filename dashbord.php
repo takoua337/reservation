@@ -15,6 +15,7 @@ function getAllclient($conn) {
 }
 
 function getAllchambre($conn) {
+    // ✅ Correction : table "chambres" (avec s)
     $result = $conn->query("SELECT COUNT(*) AS nbre FROM chambre");
     return $result ? $result->fetch_assoc() : ['nbre' => 0];
 }
@@ -31,14 +32,14 @@ function getBadgeClass($statut) {
 /* =========================
    RESERVATIONS SQL
 ========================= */
-
 $sql = "
     SELECT 
         r.id,
         r.date_arrivee,
         r.date_depart,
         r.statut,
-        r.utilisateur_id
+        r.utilisateur_id,
+        r.chambre_id
     FROM reservations r
     ORDER BY r.id DESC
     LIMIT 10
@@ -47,47 +48,51 @@ $sql = "
 $result = $conn->query($sql);
 
 if (!$result) {
-    die("<div style='color:red;padding:20px'>
-         Erreur SQL reservation : " . $conn->error . "
-    </div>");
+    die("<div style='color:red;padding:20px'>Erreur SQL reservation : " . $conn->error . "</div>");
 }
 
 $reservations = [];
-
 while ($row = $result->fetch_assoc()) {
     $reservations[] = $row;
 }
 
 foreach ($reservations as &$r) {
 
-    // CLIENT
+    // ── CLIENT ──────────────────────────────────────────
     $cResult = $conn->query("
-        SELECT * FROM utilisateur
+        SELECT prenom, nom FROM utilisateur
         WHERE id = " . (int)$r['utilisateur_id']
     );
 
     if ($cResult && $cRow = $cResult->fetch_assoc()) {
-
-        if (isset($cRow['nom']) && isset($cRow['prenom'])) {
-            $r['utilisateur_nom'] = $cRow['prenom'] . ' ' . $cRow['nom'];
-        } else {
-            $r['utilisateur_nom'] = 'Client';
-        }
-
+        $r['utilisateur_nom'] = ($cRow['prenom'] ?? '') . ' ' . ($cRow['nom'] ?? '');
     } else {
         $r['utilisateur_nom'] = 'Inconnu';
     }
 
+    // ── CHAMBRE ─────────────────────────────────────────
+    if (!empty($r['chambre_id'])) {
 
-    $r['chambre'] = 'Non assignée';
-    $r['prix']    = 0;
+        $chResult = $conn->query("
+            SELECT nom, type, prix FROM chambre
+            WHERE id = " . (int)$r['chambre_id']
+        );
+
+        if ($chResult && $chRow = $chResult->fetch_assoc()) {
+            $r['chambre'] = $chRow['nom'] . ' (' . ucfirst($chRow['type']) . ')';
+            $r['prix']    = $chRow['prix'];
+        } else {
+            $r['chambre'] = 'Chambre introuvable';
+            $r['prix']    = 0;
+        }
+
+    } else {
+        $r['chambre'] = 'Non assignée';
+        $r['prix']    = 0;
+    }
 }
 
 unset($r);
-    
-
- 
-    
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -112,11 +117,11 @@ unset($r);
   <div class="sidebar-brand">Grand Élysée</div>
   <a class="sidebar-link active" href="dashbord.php"><i class="bi bi-grid-1x2"></i> Tableau de bord</a>
   <a class="sidebar-link" href="admin_reservations.php"><i class="bi bi-calendar-check"></i> Réservations</a>
-  <a class="sidebar-link" href="admin client.html"><i class="bi bi-people"></i> Clients</a>
-  <a class="sidebar-link" href="admin chambre.html"><i class="bi bi-door-open"></i> Chambres</a>
+  <a class="sidebar-link" href="admin_client.php"><i class="bi bi-people"></i> Clients</a>
+  <a class="sidebar-link" href="admin_chambres.php"><i class="bi bi-door-open"></i> Chambres</a>
   <a class="sidebar-link" href="#"><i class="bi bi-bar-chart"></i> Statistiques</a>
   <div style="margin-top:auto;padding:1.5rem;">
-    <a href="login.html" class="sidebar-link" style="color:#e74c3c;">
+    <a href="login.php" class="sidebar-link" style="color:#e74c3c;">
       <i class="bi bi-box-arrow-left"></i> Déconnexion
     </a>
   </div>
@@ -198,14 +203,14 @@ unset($r);
           <?php else: ?>
             <?php foreach ($reservations as $r): ?>
             <tr>
-              <td>#<?= htmlspecialchars($r['id']) ?></td>
+              <td style="color:var(--muted);">#<?= htmlspecialchars($r['id']) ?></td>
               <td><?= htmlspecialchars($r['utilisateur_nom']) ?></td>
-              <td><?= htmlspecialchars($r['chambre']) ?></td>
-              <td><?= htmlspecialchars($r['date_arrivee']) ?></td>
-              <td><?= htmlspecialchars($r['date_depart']) ?></td>
+              <td style="color:var(--gold);"><?= htmlspecialchars($r['chambre']) ?></td>
+              <td style="color:var(--muted);"><?= htmlspecialchars($r['date_arrivee']) ?></td>
+              <td style="color:var(--muted);"><?= htmlspecialchars($r['date_depart']) ?></td>
               <td>
                 <?php if ($r['statut'] === 'Annulée'): ?>
-                  <s style="color:var(--muted);"><?= number_format($r['prix'], 0, ',', ' ') ?> €</s>
+                  <s style="color:var(--muted);"><?= number_format($r['prix'], 0, ',', ' ') ?> dt</s>
                 <?php else: ?>
                   <?= number_format($r['prix'], 0, ',', ' ') ?> dt
                 <?php endif; ?>
@@ -216,7 +221,8 @@ unset($r);
                 </span>
               </td>
               <td>
-                <button class="btn btn-sm" style="border:1px solid rgba(201,168,76,0.3);color:var(--gold);font-size:0.72rem;padding:3px 10px;">
+                <button class="btn btn-sm"
+                  style="border:1px solid rgba(201,168,76,0.3);color:var(--gold);font-size:0.72rem;padding:3px 10px;">
                   Voir
                 </button>
               </td>
@@ -231,7 +237,7 @@ unset($r);
   <!-- QUICK ACTIONS -->
   <div class="row g-3">
     <div class="col-md-4">
-      <a href="admin-chambres.php" style="text-decoration:none;">
+      <a href="admin_chambres.php" style="text-decoration:none;">
         <div style="background:var(--dark2);border:1px solid rgba(201,168,76,0.15);padding:1.5rem;display:flex;align-items:center;gap:16px;transition:border-color 0.2s;"
           onmouseover="this.style.borderColor='rgba(201,168,76,0.4)'"
           onmouseout="this.style.borderColor='rgba(201,168,76,0.15)'">
@@ -244,7 +250,7 @@ unset($r);
       </a>
     </div>
     <div class="col-md-4">
-      <a href="admin-clients.php" style="text-decoration:none;">
+      <a href="admin_client.php" style="text-decoration:none;">
         <div style="background:var(--dark2);border:1px solid rgba(201,168,76,0.15);padding:1.5rem;display:flex;align-items:center;gap:16px;transition:border-color 0.2s;"
           onmouseover="this.style.borderColor='rgba(201,168,76,0.4)'"
           onmouseout="this.style.borderColor='rgba(201,168,76,0.15)'">
@@ -257,7 +263,7 @@ unset($r);
       </a>
     </div>
     <div class="col-md-4">
-      <a href="admin-reservations.php" style="text-decoration:none;">
+      <a href="admin_reservations.php" style="text-decoration:none;">
         <div style="background:var(--dark2);border:1px solid rgba(201,168,76,0.15);padding:1.5rem;display:flex;align-items:center;gap:16px;transition:border-color 0.2s;"
           onmouseover="this.style.borderColor='rgba(201,168,76,0.4)'"
           onmouseout="this.style.borderColor='rgba(201,168,76,0.15)'">
